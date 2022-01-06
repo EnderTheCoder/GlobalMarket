@@ -33,6 +33,8 @@ public class UserCommand implements CommandExecutor {
         UUID uuid = player.getUniqueId();
         switch (args[0]) {
             case "buy": {
+                if (args.length != 3) sender.sendMessage(ChatColor.RED + "输入的参数太多或者太少，此处应为3个");
+
                 //调试代码，记得移除
                 Vault.addVaultCurrency(uuid, 0.1);
 
