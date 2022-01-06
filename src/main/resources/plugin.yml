@@ -16,10 +16,10 @@ commands:
     description: Buy or sell some item in player's inventory # 描述
     permission: globalmarket.use
     permission-message: You need to have the permission to use this command. Please contact your server OP. # 无权限返回的消息，通常不用
-#permissions:
-#  globalmarket.admin:
-#    description: Admin
-#    default: op
-#  globalmarket.use:
-#    description: market use permission
-#    default: not op
+permissions:
+  globalmarket.admin:
+    description: Admin
+    default: op
+  globalmarket.use:
+    description: market use permission
+    default: true
