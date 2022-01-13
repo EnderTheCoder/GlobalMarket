@@ -5,19 +5,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public final class ConfigReader {
 
-    public static FileConfiguration config = Main.instance.getConfig();
-    // 由于三个方法都要使用，我们将这个变量抽取出来到最外层
+    static FileConfiguration config = Main.instance.getConfig();
 
-    public static boolean isPlayerRegistered(String playerName) {
-
-        return config.contains(playerName.toLowerCase());
+    public static String getMysqlConfig(String mysqlConfigTag) {
+        return config.getString(mysqlConfigTag);
     }
 
-    public static int getMoney(String playerName) {
-        return (int) config.get("a");
+    public static double getTaxRate() {
+        return config.getDouble("TaxRate");
     }
 
-    public static boolean setMoney(String playerName) {
-        return true;
-    }
+
 }

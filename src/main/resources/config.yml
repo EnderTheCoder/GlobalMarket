@@ -1,0 +1,9 @@
+# Mysql功能区
+Mysql.Username: username
+Mysql.password: 123456
+Mysql.Address: 127.0.0.1
+Mysql.Port: 3306
+Mysql.DataBaseName: database
+
+#贸易税率，收税上交给经济第一的人
+TaxRate: 0.005

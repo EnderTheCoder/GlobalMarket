@@ -11,11 +11,20 @@ loadbefore:
 commands:
   globalmarket: # 命令的基本名，请不要使用奇怪的字符！
     aliases: # 别名，方便玩家使用
-      - egm
+      - gm
     usage: /globalmarket <player-name> # 用法
     description: Buy or sell some item in player's inventory # 描述
     permission: globalmarket.use
     permission-message: You need to have the permission to use this command. Please contact your server OP. # 无权限返回的消息，通常不用
+  globalmarketadmin:
+    aliases:
+      - gma
+    usage: |
+      /globalmarketadmin set <x> <k> <b> <item_name> 创建新的可交易物品
+    description: Admin command for globalmarket
+    permission: globalmarket.admin
+    permission-message: You need to have the permission to use this command. Please contact your server OP. # 无权限返回的消息，通常不用
+
 permissions:
   globalmarket.admin:
     description: Admin
