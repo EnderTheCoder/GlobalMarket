@@ -35,7 +35,10 @@ public class MarketEconomy {
     }
 
     public static double calculate(MarketItem item) {
-        return item.k / Math.pow((double) item.x + 1, (double) 1 / item.b);
+        double price = item.k / Math.pow((double) item.x + 1, (double) 1 / item.b);
+        return Math.max(price, 0.01);
     }
+
+
 
 }

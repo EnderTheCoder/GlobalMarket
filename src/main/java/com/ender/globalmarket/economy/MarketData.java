@@ -8,12 +8,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MarketData {
-    public static ResultSet getAllMarketItems() throws SQLException {
+    public static MarketItem[] getAllMarketItems(){
         Mysql m = new Mysql();
+        MarketItem[] marketItems = new MarketItem[10000];
+
         m.prepareSql("SELECT * FROM market_item_data");
         m.execute();
+        ResultSet resultSet = m.getResult();
 
-        return m.getResult();
+        try {
+            int counter = 0;
+            while (resultSet.next()) {
+                marketItems[counter] = new MarketItem();
+                marketItems[counter].item = Material.matchMaterial(resultSet.getString("item_name"));
+                marketItems[counter].x = resultSet.getInt("x");
+                marketItems[counter].k = resultSet.getInt("k");
+                marketItems[counter].b = resultSet.getInt("b");
+                counter++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return marketItems;
     }
 
 

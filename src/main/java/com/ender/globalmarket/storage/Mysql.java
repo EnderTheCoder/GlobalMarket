@@ -15,22 +15,21 @@ public class Mysql {
 
     public boolean mysqlInit() {
 
-        ConfigReader config = new ConfigReader();
 
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 
 
         // 连接参数的固定格式
         String DB_URL =
-                "jdbc:mysql://" + config.getMysqlConfig("Mysql.Address") + ":" +
-                        config.getMysqlConfig("Mysql.Port") +
+                "jdbc:mysql://" + ConfigReader.getMysqlConfig("Mysql.Address") + ":" +
+                        ConfigReader.getMysqlConfig("Mysql.Port") +
                         "/" +
-                        config.getMysqlConfig("Mysql.DataBaseName") +
+                        ConfigReader.getMysqlConfig("Mysql.DataBaseName") +
                         "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         try {
             // 驱动名称
             Class.forName(JDBC_DRIVER); // forName 又来了！
-            connection = DriverManager.getConnection(DB_URL, config.getMysqlConfig("Mysql.Username"), config.getMysqlConfig("Mysql.password"));
+            connection = DriverManager.getConnection(DB_URL, ConfigReader.getMysqlConfig("Mysql.Username"), ConfigReader.getMysqlConfig("Mysql.password"));
             getLogger().info(ChatColor.GREEN + "Mysql successfully connected.");
 
         } catch (ClassNotFoundException | SQLException e) {
@@ -72,6 +71,14 @@ public class Mysql {
             getLogger().warning(ChatColor.RED + "An error in mysql occurred while executing sql.");
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
