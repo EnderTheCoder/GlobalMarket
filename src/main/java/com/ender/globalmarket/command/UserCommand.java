@@ -225,6 +225,10 @@ public class UserCommand implements CommandExecutor {
                 }
                 break;
             }
+            case "help":
+            default: {
+                return false;
+            }
         }
         return true;
     }
