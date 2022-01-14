@@ -135,13 +135,19 @@ public class UserCommand implements CommandExecutor {
                 int sellAmount = 0;
 
                 if (amountInInventory == 0) {
-                    sender.sendMessage(ChatColor.YELLOW + "你的背包空空如也，没有你欲出售的物品！");
+                    sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你的背包空空如也，没有你欲出售的物品！");
+                    return true;
                 }
 
                 if (Objects.equals(args[2], "all")) {
                     sellAmount = amountInInventory;
                 } else {
                     sellAmount = Integer.parseInt(args[2]);
+                }
+
+                if (amountInInventory < sellAmount) {
+                    sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你背包中的物品不足！");
+                    return true;
                 }
 
                 int sellAmountCopy = sellAmount;
