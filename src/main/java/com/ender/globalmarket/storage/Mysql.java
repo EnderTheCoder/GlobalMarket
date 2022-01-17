@@ -74,7 +74,7 @@ public class Mysql {
         }
     }
 
-    public void closeConnection() {
+    public void close() {
         try {
             connection.close();
         } catch (SQLException e) {

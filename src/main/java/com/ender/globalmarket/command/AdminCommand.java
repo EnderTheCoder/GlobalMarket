@@ -44,6 +44,7 @@ public class AdminCommand implements CommandExecutor {
                 break;
             }
             case "remove": {
+
                 break;
             }
             default: {

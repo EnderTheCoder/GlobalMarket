@@ -128,8 +128,8 @@ public class UserCommand implements CommandExecutor {
 
                 int amountInInventory = 0;
                 ItemStack[] itemStacks = player.getInventory().getContents();
-                for (int i = 0; itemStacks[i] != null; i++) {
-                    if (itemStacks[i].getType().equals(itemToSell)) amountInInventory += itemStacks[i].getAmount();
+                for (ItemStack itemStack : itemStacks) {
+                    if (itemStack.getType().equals(itemToSell)) amountInInventory += itemStack.getAmount();
                 }
 
                 int sellAmount = 0;
@@ -226,7 +226,7 @@ public class UserCommand implements CommandExecutor {
 
                 MarketItem[] marketItems = MarketData.getAllMarketItems();
                 for (int i = 0; marketItems[i] != null; i++) {
-                    sender.sendMessage("物品名称:" + marketItems[i].item.getKey() + " // 物品市场存量:" + marketItems[i].x + " // 物品价格:$" + MarketEconomy.formatMoney(MarketEconomy.calculate(marketItems[i])));
+                    sender.sendMessage("名称:" + marketItems[i].item.getKey() + " // 库存:" + marketItems[i].x + " // 单价:$" + MarketEconomy.formatMoney(MarketEconomy.calculate(marketItems[i])));
 
                 }
                 break;
