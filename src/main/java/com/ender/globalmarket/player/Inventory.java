@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import static org.bukkit.Bukkit.getLogger;
+
 
 public class Inventory {
 
@@ -12,16 +14,17 @@ public class Inventory {
         int amountInInventory = 0;
         ItemStack[] itemStacks = player.getInventory().getContents();
         for (ItemStack itemStack : itemStacks) {
-            if (itemStack.getType().equals(material)) amountInInventory += itemStack.getAmount();
+            if (itemStack != null && itemStack.getType().equals(material)) amountInInventory += itemStack.getAmount();
         }
         return amountInInventory;
     }
 
     //从玩家的背包移除物品
-    public static boolean subtractInventory(Player player, Material material, int amount) {
+    public static void subtractInventory(Player player, Material material, int amount) {
         ItemStack[] itemStacks = player.getInventory().getContents();
+        getLogger().info(String.valueOf(itemStacks.length));
         for (int i = 0; amount > 0 && i < itemStacks.length; i++) {
-            if (itemStacks[i].getType().equals(material)) {
+            if (itemStacks[i] != null && itemStacks[i].getType().equals(material)) {
                 if (itemStacks[i].getAmount() < amount) {
                     amount -= itemStacks[i].getAmount();
                     itemStacks[i].setAmount(0);
@@ -29,9 +32,9 @@ public class Inventory {
                     itemStacks[i].setAmount(itemStacks[i].getAmount() - amount);
                     amount = 0;
                 }
+                player.getInventory().setItem(i, itemStacks[i]);
             }
         }
-        return true;
     }
 
 

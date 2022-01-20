@@ -14,8 +14,8 @@ public class MarketEconomy {
         double price = 0.0;
         while (count > 0) {
             count--;
-            price += calculate(item);
             item.x--;
+            price += calculate(item);
         }
         return formatMoney(price);
     }
@@ -24,8 +24,8 @@ public class MarketEconomy {
         double price = 0.0;
         while (count > 0) {
             count--;
-            item.x++;
             price += calculate(item);
+            item.x++;
         }
         return formatMoney(price);
     }

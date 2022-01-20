@@ -5,6 +5,7 @@ import com.ender.globalmarket.data.MarketItem;
 import com.ender.globalmarket.economy.MarketData;
 import com.ender.globalmarket.economy.MarketEconomy;
 import com.ender.globalmarket.money.Vault;
+import com.ender.globalmarket.player.Inventory;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -39,26 +40,29 @@ public class UserCommand implements CommandExecutor {
         UUID uuid = player.getUniqueId();
         switch (args[0]) {
             case "buy": {
-                if (args.length != 3) sender.sendMessage(ChatColor.RED + "[GlobalMarket]输入的参数太多或者太少，此处应为3个");
-
-
+                //检测参数数量
+                if (args.length != 3) {
+                    sender.sendMessage(ChatColor.RED + "[GlobalMarket]输入的参数太多或者太少，此处应为3个");
+                    return true;
+                }
+                //检测物品是否存在
                 Material itemToBuy = Material.matchMaterial(args[1]);
                 if (itemToBuy == null) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的物品不存在，请在物品名称前加命名空间。如原版物品minecraft:..., 或者机械动力物品create:...");
                     return true;
                 }
-
+                //检测物品是否在数据库中
                 MarketItem marketItem = MarketData.getMarketItem(itemToBuy);
                 if (marketItem == null) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的物品当前不可交易，请使用命令/globalmarket list查询可交易物品列表");
                     return true;
                 }
-
+                //检测物品数量合法性
                 if (Integer.parseInt(args[2]) <= 0) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的数量不合法，应大于0");
                     return true;
                 }
-
+                //检测市场存量是否满足
                 if (Integer.parseInt(args[2]) > marketItem.x) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的数量超过了当前市场的存量");
                     return true;
@@ -68,7 +72,7 @@ public class UserCommand implements CommandExecutor {
                 double costs = MarketEconomy.getBuyingPrice(marketItem, Integer.parseInt(args[2]));
                 double tax = MarketEconomy.getTax(costs);
 
-
+                //检测玩家余额是否满足
                 if (Vault.checkCurrency(uuid) < costs + tax) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你的账户余额不足以进行本次购买， 本次购买需要税后：$" + (costs + tax));
                     return true;
@@ -83,15 +87,7 @@ public class UserCommand implements CommandExecutor {
                     ItemStack itemStack = new ItemStack(itemToBuy, count);
                     player.getInventory().addItem(itemStack);
 
-//                    marketItem.x -= Integer.parseInt(args[2]);
                     MarketData.updateMarketItemStorage(marketItem);
-
-//                    String[] commandArgs = new String[10];
-//                    commandArgs[0] = player.getName();
-//                    commandArgs[1] = String.valueOf(itemToBuy.getKey());
-//                    commandArgs[2] = args[2];
-//                    command.execute((CommandSender) Bukkit.getServer(), "give", commandArgs);
-
                     sender.sendMessage(ChatColor.GREEN + "[GlobalMarket]交易成功，你购买了" + args[2] + "个" + itemToBuy.name() + "，税后花费:" + (costs + tax));
 
                 }
@@ -126,11 +122,7 @@ public class UserCommand implements CommandExecutor {
                 }
 
 
-                int amountInInventory = 0;
-                ItemStack[] itemStacks = player.getInventory().getContents();
-                for (ItemStack itemStack : itemStacks) {
-                    if (itemStack.getType().equals(itemToSell)) amountInInventory += itemStack.getAmount();
-                }
+                int amountInInventory = Inventory.calcInventory(player, itemToSell);
 
                 int sellAmount = 0;
 
@@ -159,18 +151,8 @@ public class UserCommand implements CommandExecutor {
 
                 MarketData.updateMarketItemStorage(marketItem);
 
-                for (int i = 0; sellAmount > 0 && itemStacks[i] != null; i++) {
-                    if (itemStacks[i].getType().equals(itemToSell)) {
-                        if (itemStacks[i].getAmount() < sellAmount) {
-                            sellAmount -= itemStacks[i].getAmount();
-                            itemStacks[i].setAmount(0);
-                        }
-                        else {
-                            itemStacks[i].setAmount(itemStacks[i].getAmount() - sellAmount);
-                            sellAmount = 0;
-                        }
-                    }
-                }
+                Inventory.subtractInventory(player, itemToSell, sellAmount);
+
                 sender.sendMessage(ChatColor.GREEN + "[GlobalMarket]交易成功，你出售了" + sellAmountCopy + "个" + itemToSell.name() + "，税后所得:" + (price - tax));
                 break;
             }

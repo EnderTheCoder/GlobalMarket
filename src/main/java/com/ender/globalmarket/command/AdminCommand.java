@@ -2,13 +2,15 @@ package com.ender.globalmarket.command;
 
 import com.ender.globalmarket.data.MarketItem;
 import com.ender.globalmarket.economy.MarketData;
+import com.ender.globalmarket.player.EssInventory;
+import com.ender.globalmarket.player.Inventory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class AdminCommand implements CommandExecutor {
 
@@ -45,6 +47,16 @@ public class AdminCommand implements CommandExecutor {
             }
             case "remove": {
 
+                break;
+            }
+            case "test": {
+                ItemStack itemStack = new ItemStack(Material.ACACIA_BUTTON, 64);
+                EssInventory.addAllItems(player.getInventory(), itemStack);
+                break;
+            }
+            case "test2": {
+//                ItemStack itemStack = new ItemStack(Material.ARROW, Integer.parseInt(args[1]));
+                Inventory.subtractInventory(player, Material.ARROW, Integer.parseInt(args[1]));
                 break;
             }
             default: {
