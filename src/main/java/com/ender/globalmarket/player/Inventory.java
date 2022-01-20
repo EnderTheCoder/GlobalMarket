@@ -50,11 +50,11 @@ public class Inventory {
     }
 
     //计算背包中的空格子数
-    public static int calcEmpty(Player player, Material material, int amount) {
+    public static int calcEmpty(Player player) {
         ItemStack[] itemStacks = player.getInventory().getContents();
         int count = 0;
         for (ItemStack itemStack : itemStacks) {
-            if (itemStack.hasItemMeta()) count++;
+            if (itemStack != null && itemStack.hasItemMeta()) count++;
         }
         return count;
     }

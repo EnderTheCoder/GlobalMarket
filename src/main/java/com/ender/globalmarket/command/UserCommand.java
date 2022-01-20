@@ -67,7 +67,11 @@ public class UserCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的数量超过了当前市场的存量");
                     return true;
                 }
-
+                //检测玩家背包是否满足
+                if (Inventory.calcEmpty(player) < (double) Integer.parseInt(args[2]) / (double) itemToBuy.getMaxStackSize()) {
+                    sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你的背包剩余空格数不足以容纳你要购买的物品");
+                    return true;
+                }
 
                 double costs = MarketEconomy.getBuyingPrice(marketItem, Integer.parseInt(args[2]));
                 double tax = MarketEconomy.getTax(costs);
@@ -79,14 +83,7 @@ public class UserCommand implements CommandExecutor {
                 } else {
                     Vault.subtractCurrency(uuid, costs + tax);
 
-                    int count = Integer.parseInt(args[2]);
-                    for (;count > itemToBuy.getMaxStackSize(); count -= itemToBuy.getMaxStackSize()) {
-                        ItemStack itemStack = new ItemStack(itemToBuy, itemToBuy.getMaxStackSize());
-                        player.getInventory().addItem(itemStack);
-                    }
-                    ItemStack itemStack = new ItemStack(itemToBuy, count);
-                    player.getInventory().addItem(itemStack);
-
+                    Inventory.addInventory(player, itemToBuy, Integer.parseInt(args[2]));
                     MarketData.updateMarketItemStorage(marketItem);
                     sender.sendMessage(ChatColor.GREEN + "[GlobalMarket]交易成功，你购买了" + args[2] + "个" + itemToBuy.name() + "，税后花费:" + (costs + tax));
 
@@ -108,12 +105,13 @@ public class UserCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的物品不存在，请在物品名称前加命名空间。如原版物品minecraft:..., 或者机械动力物品create:...");
                     return true;
                 }
-
+                //检测此种物品是否可交易
                 MarketItem marketItem = MarketData.getMarketItem(itemToSell);
                 if (marketItem == null) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的物品当前不可交易，请使用命令/globalmarket list查询可交易物品列表");
                     return true;
                 }
+                //检测玩家是否输入all，卖出所有此种物品
                 if (!args[2].equals("all")) {
                     if (Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的数量不合法，应大于0");
@@ -121,7 +119,7 @@ public class UserCommand implements CommandExecutor {
                     }
                 }
 
-
+                //计算背包中的所求物品数
                 int amountInInventory = Inventory.calcInventory(player, itemToSell);
 
                 int sellAmount = 0;
@@ -180,10 +178,11 @@ public class UserCommand implements CommandExecutor {
 
                 switch (args[1]) {
                     case "buy": {
-                        if (marketItem.x > Integer.parseInt(args[3])) {
+                        if (marketItem.x < Integer.parseInt(args[3])) {
                             sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]输入的数量超过当前市场存量，无法计算");
                             return true;
                         }
+
                         double price = MarketEconomy.getBuyingPrice(marketItem, Integer.parseInt(args[3]));
                         double tax = MarketEconomy.getTax(price);
 

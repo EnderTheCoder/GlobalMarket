@@ -50,14 +50,6 @@ public class AdminCommand implements CommandExecutor {
                 break;
             }
             case "test": {
-                ItemStack itemStack = new ItemStack(Material.ACACIA_BUTTON, 64);
-                EssInventory.addAllItems(player.getInventory(), itemStack);
-                break;
-            }
-            case "test2": {
-//                ItemStack itemStack = new ItemStack(Material.ARROW, Integer.parseInt(args[1]));
-                Inventory.subtractInventory(player, Material.ARROW, Integer.parseInt(args[1]));
-                break;
             }
             default: {
                 return false;
