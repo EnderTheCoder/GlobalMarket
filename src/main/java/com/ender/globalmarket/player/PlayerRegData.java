@@ -1,5 +1,6 @@
 package com.ender.globalmarket.player;
 
+import com.ender.globalmarket.storage.ConfigReader;
 import com.ender.globalmarket.storage.Mysql;
 import org.bukkit.entity.Player;
 
@@ -8,6 +9,8 @@ import java.sql.SQLException;
 
 public class PlayerRegData {
     public static boolean isVIP(Player player) {
+        if (!ConfigReader.getEnableNoTax()) return false;
+
         Mysql m = new Mysql();
         m.prepareSql("SELECT level FROM user WHERE username = ?");
         m.setData(1, player.getName());

@@ -7,6 +7,7 @@ import com.ender.globalmarket.event.GUIAction;
 import com.ender.globalmarket.event.GUIInput;
 import com.ender.globalmarket.money.Vault;
 import com.ender.globalmarket.storage.Mysql;
+import com.ender.globalmarket.storage.MysqlInit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -43,6 +44,9 @@ public class Main extends JavaPlugin {
         Vault.vaultSetup();
 
         Mysql m = new Mysql();
+
+        if (!MysqlInit.checkTable("market_log")) MysqlInit.init_market_log();
+        if (!MysqlInit.checkTable("market_item_data")) MysqlInit.init_market_item_data();
 
         if (!m.mysqlInit()) {
             getLogger().warning(ChatColor.RED + "Failed to connect to mysql. Check your config.yml to fix this. Plugin is shutting down.");
