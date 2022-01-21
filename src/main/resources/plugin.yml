@@ -13,9 +13,10 @@ commands:
     aliases: # 别名，方便玩家使用
       - gm
     usage: | 
+      /globalmarket gui 打开图形化市场
       /globalmarket money 查看账户余额
       /globalmarket list 查看可交易物品列表
-      /globalmarket sell <物品名称(格式minecraft:xxx)> <数量> 出售一定数量物品
+      /globalmarket sell <物品名称(格式minecraft:xxx)> <数量> 出售一定数量物品，数量输入all可以出售所有此种物品
       /globalmarket buy <物品名称(格式minecraft:xxx)> <数量> 购买一定数量物品
       /globalmarket calc [buy/sell] <物品名称(格式minecraft:xxx)> <数量> 计算出售或购买一定数量物品的价格
       /globalmarket help 查看命令提示

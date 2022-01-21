@@ -15,5 +15,7 @@ public final class ConfigReader {
         return config.getDouble("TaxRate");
     }
 
-
+    public static int getTimeOut(String timeOutTag) {
+        return config.getInt("TimeOut." + timeOutTag);
+    }
 }

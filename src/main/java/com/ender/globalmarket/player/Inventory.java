@@ -22,7 +22,6 @@ public class Inventory {
     //从玩家的背包移除物品
     public static void subtractInventory(Player player, Material material, int amount) {
         ItemStack[] itemStacks = player.getInventory().getContents();
-        getLogger().info(String.valueOf(itemStacks.length));
         for (int i = 0; amount > 0 && i < itemStacks.length; i++) {
             if (itemStacks[i] != null && itemStacks[i].getType().equals(material)) {
                 if (itemStacks[i].getAmount() < amount) {
@@ -39,14 +38,13 @@ public class Inventory {
 
 
     //为玩家的背包增加物品
-    public static boolean addInventory(Player player, Material material, int amount) {
+    public static void addInventory(Player player, Material material, int amount) {
         for (;amount > material.getMaxStackSize(); amount -= material.getMaxStackSize()) {
             ItemStack itemStack = new ItemStack(material, material.getMaxStackSize());
             player.getInventory().addItem(itemStack);
         }
         ItemStack itemStack = new ItemStack(material, amount);
         player.getInventory().addItem(itemStack);
-        return true;
     }
 
     //计算背包中的空格子数
@@ -54,7 +52,7 @@ public class Inventory {
         ItemStack[] itemStacks = player.getInventory().getContents();
         int count = 0;
         for (ItemStack itemStack : itemStacks) {
-            if (itemStack != null && itemStack.hasItemMeta()) count++;
+            if (itemStack == null) count++;
         }
         return count;
     }

@@ -2,8 +2,11 @@ package com.ender.globalmarket.command;
 
 import com.ender.globalmarket.Main;
 import com.ender.globalmarket.data.MarketItem;
+import com.ender.globalmarket.data.Trade;
 import com.ender.globalmarket.economy.MarketData;
 import com.ender.globalmarket.economy.MarketEconomy;
+import com.ender.globalmarket.economy.MarketTrade;
+import com.ender.globalmarket.gui.MarketGUI;
 import com.ender.globalmarket.money.Vault;
 import com.ender.globalmarket.player.Inventory;
 import org.bukkit.Bukkit;
@@ -19,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -68,7 +72,7 @@ public class UserCommand implements CommandExecutor {
                     return true;
                 }
                 //检测玩家背包是否满足
-                if (Inventory.calcEmpty(player) < (double) Integer.parseInt(args[2]) / (double) itemToBuy.getMaxStackSize()) {
+                if (!MarketTrade.isEnoughSlot(player, Integer.parseInt(args[2]), itemToBuy)) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你的背包剩余空格数不足以容纳你要购买的物品");
                     return true;
                 }
@@ -80,14 +84,10 @@ public class UserCommand implements CommandExecutor {
                 if (Vault.checkCurrency(uuid) < costs + tax) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你的账户余额不足以进行本次购买， 本次购买需要税后：$" + (costs + tax));
                     return true;
-                } else {
-                    Vault.subtractCurrency(uuid, costs + tax);
-
-                    Inventory.addInventory(player, itemToBuy, Integer.parseInt(args[2]));
-                    MarketData.updateMarketItemStorage(marketItem);
-                    sender.sendMessage(ChatColor.GREEN + "[GlobalMarket]交易成功，你购买了" + args[2] + "个" + itemToBuy.name() + "，税后花费:" + (costs + tax));
-
                 }
+
+                MarketTrade.trade(player, marketItem, Integer.parseInt(args[2]), MarketTrade.type.BUY);
+
                 break;
             }
             case "sell": {
@@ -140,18 +140,8 @@ public class UserCommand implements CommandExecutor {
                     return true;
                 }
 
-                int sellAmountCopy = sellAmount;
+                MarketTrade.trade(player, marketItem, sellAmount, MarketTrade.type.SELL);
 
-                double price = MarketEconomy.getSellingPrice(marketItem, sellAmount);
-                double tax = MarketEconomy.getTax(price);
-
-                Vault.addVaultCurrency(uuid, price - tax);
-
-                MarketData.updateMarketItemStorage(marketItem);
-
-                Inventory.subtractInventory(player, itemToSell, sellAmount);
-
-                sender.sendMessage(ChatColor.GREEN + "[GlobalMarket]交易成功，你出售了" + sellAmountCopy + "个" + itemToSell.name() + "，税后所得:" + (price - tax));
                 break;
             }
             case "money": {
@@ -205,11 +195,15 @@ public class UserCommand implements CommandExecutor {
             case "list": {
                 sender.sendMessage(ChatColor.AQUA + "[GlobalMarket]可交易物品列表查询：");
 
-                MarketItem[] marketItems = MarketData.getAllMarketItems();
-                for (int i = 0; marketItems[i] != null; i++) {
-                    sender.sendMessage("名称:" + marketItems[i].item.getKey() + " // 库存:" + marketItems[i].x + " // 单价:$" + MarketEconomy.formatMoney(MarketEconomy.calculate(marketItems[i])));
+                List<MarketItem> marketItems= MarketData.getAllMarketItems();
+                for (MarketItem marketItem : marketItems) {
+                    sender.sendMessage("名称:" + marketItem.item.name() + " || 库存:" + marketItem.x + " || 单价:$" + MarketEconomy.formatMoney(MarketEconomy.calculate(marketItem)));
 
                 }
+                break;
+            }
+            case "gui": {
+                MarketGUI.open(player, 1);
                 break;
             }
             case "help":

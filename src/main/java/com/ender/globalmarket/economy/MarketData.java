@@ -6,39 +6,41 @@ import org.bukkit.Material;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MarketData {
-    public static MarketItem[] getAllMarketItems(){
+    public static List<MarketItem> getAllMarketItems(){
         Mysql m = new Mysql();
-        MarketItem[] marketItems = new MarketItem[10000];
+
+        List<MarketItem> list = new ArrayList<>();
+
 
         m.prepareSql("SELECT * FROM market_item_data");
         m.execute();
         ResultSet resultSet = m.getResult();
 
         try {
-            int counter = 0;
             while (resultSet.next()) {
-                marketItems[counter] = new MarketItem();
-                marketItems[counter].item = Material.matchMaterial(resultSet.getString("item_name"));
-                marketItems[counter].x = resultSet.getInt("x");
-                marketItems[counter].k = resultSet.getInt("k");
-                marketItems[counter].b = resultSet.getInt("b");
-                counter++;
+                MarketItem marketItem = new MarketItem();
+                marketItem.item = Material.matchMaterial(resultSet.getString("item_name"));
+                marketItem.x = resultSet.getInt("x");
+                marketItem.k = resultSet.getInt("k");
+                marketItem.b = resultSet.getInt("b");
+                if (marketItem.item != null) list.add(marketItem);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        return marketItems;
+        m.close();
+        return list;
     }
 
 
     public static MarketItem getMarketItem(Material item) {
         Mysql m = new Mysql();
         m.prepareSql("SELECT * FROM market_item_data where item_name = ?");
-        m.setData(1, String.valueOf(item.getKey()));
+        m.setData(1, item.name());
         m.execute();
         ResultSet r = m.getResult();
         MarketItem marketItem = new MarketItem();
@@ -58,17 +60,19 @@ public class MarketData {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        m.close();
         return marketItem;
     }
 
     public static void putMarketItem(MarketItem item) {
         Mysql m = new Mysql();
         m.prepareSql("INSERT INTO market_item_data (item_name, x, k, b) values (?, ?, ?, ?)");
-        m.setData(1, String.valueOf(item.item.getKey()));
+        m.setData(1, item.item.name());
         m.setData(2, String.valueOf(item.x));
         m.setData(3, String.valueOf(item.k));
         m.setData(4, String.valueOf(item.b));
         m.execute();
+        m.close();
     }
 
     public static void updateMarketItemStorage(MarketItem item) {
@@ -77,7 +81,8 @@ public class MarketData {
         m.setData(1, String.valueOf(item.x));
         m.setData(2, String.valueOf(item.b));
         m.setData(3, String.valueOf(item.k));
-        m.setData(4, String.valueOf(item.item.getKey()));
+        m.setData(4, String.valueOf(item.item.name()));
         m.execute();
+        m.close();
     }
 }

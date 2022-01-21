@@ -7,3 +7,5 @@ Mysql.DataBaseName: database
 
 #贸易税率，收税上交给经济第一的人
 TaxRate: 0.005
+
+TimeOut.Trade: 10

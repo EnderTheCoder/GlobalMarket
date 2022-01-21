@@ -30,7 +30,7 @@ public class Mysql {
             // 驱动名称
             Class.forName(JDBC_DRIVER); // forName 又来了！
             connection = DriverManager.getConnection(DB_URL, ConfigReader.getMysqlConfig("Mysql.Username"), ConfigReader.getMysqlConfig("Mysql.password"));
-            getLogger().info(ChatColor.GREEN + "Mysql successfully connected.");
+//            getLogger().info(ChatColor.GREEN + "Mysql successfully connected.");
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -95,7 +95,7 @@ public class Mysql {
     public Connection getConnection() {
         try {
             if (!connection.isValid(1000)) {
-                getLogger().info(ChatColor.RED + "Mysql connection is now closed. Trying to creating a new one.");
+//                getLogger().info(ChatColor.RED + "Mysql connection is now closed. Trying to creating a new one.");
                 mysqlInit();
             }
             return connection;
