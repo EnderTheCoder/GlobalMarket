@@ -7,7 +7,10 @@ import org.bukkit.Material;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
+
+import static org.bukkit.Bukkit.getLogger;
 
 public class MarketData {
     public static List<MarketItem> getAllMarketItems(){
@@ -28,6 +31,7 @@ public class MarketData {
                 marketItem.k = resultSet.getInt("k");
                 marketItem.b = resultSet.getInt("b");
                 if (marketItem.item != null) list.add(marketItem);
+                else getLogger().warning(String.format("[GlobalMarket]We found an illegal item in your database which names '%s'. Please check if it's a bug.", resultSet.getString("item_name")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,6 +86,22 @@ public class MarketData {
         m.setData(2, String.valueOf(item.b));
         m.setData(3, String.valueOf(item.k));
         m.setData(4, String.valueOf(item.item.name()));
+        m.execute();
+        m.close();
+    }
+
+    public static void removeMarketItem(MarketItem item) {
+        Mysql m = new Mysql();
+        m.prepareSql("DELETE FROM market_item_data WHERE item_name = ?");
+        m.setData(1, item.item.name());
+        m.execute();
+        m.close();
+    }
+
+    public static void removeMarketItem(String itemName) {
+        Mysql m = new Mysql();
+        m.prepareSql("DELETE FROM market_item_data WHERE item_name = ?");
+        m.setData(1, itemName);
         m.execute();
         m.close();
     }
