@@ -1,7 +1,7 @@
 name: GlobalMarket
 main: com.ender.globalmarket.Main
-version: alpha0.1
-api-version: 1.16
+version: 1.0
+api-version: 1.18
 # YAML 中的注释，一行有效
 # 以上是插件基本信息，以下是命令注册
 depend:
@@ -28,7 +28,8 @@ commands:
     aliases:
       - gma
     usage: |
-      /globalmarketadmin set <x> <k> <b> <item_name> 创建新的可交易物品
+      /globalmarketadmin set <库存> <最高价格> <市场稳定度> <物品名称> 创建新的可交易物品
+      /globalmarketadmin remove <物品名称> 移除可交易物品
     description: Admin command for globalmarket
     permission: globalmarket.admin
     permission-message: You need to have the permission to use this command. Please contact your server OP. # 无权限返回的消息，通常不用
