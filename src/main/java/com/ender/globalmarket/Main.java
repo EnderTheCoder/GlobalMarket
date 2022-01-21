@@ -30,7 +30,6 @@ public class Main extends JavaPlugin {
 
         saveDefaultConfig();
 
-        getLogger().info(ChatColor.GREEN + "欢迎使用Ender's Global Market插件，加载成功");
 
         if (Bukkit.getPluginCommand("globalmarket") != null) {
             Bukkit.getPluginCommand("globalmarket").setExecutor(new UserCommand());
@@ -54,5 +53,8 @@ public class Main extends JavaPlugin {
         } else {
             getLogger().info(ChatColor.GREEN + "Mysql connected.");
         }
+        getLogger().info(ChatColor.GREEN + "欢迎使用Ender's Global Market插件，加载成功");
+        getLogger().info(ChatColor.GREEN + "本插件赠予开源社区，源代码地址：https://github.com/EnderTheCoder/GlobalMarket");
+
     }
 }
