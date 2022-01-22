@@ -11,7 +11,7 @@ public class MysqlInit {
         m.execute();
         ResultSet resultSet = m.getResult();
         try {
-            return resultSet.getRow() > 0;
+            return resultSet.getFetchSize() > 0;
         } catch (SQLException exception) {
             exception.printStackTrace();
             return false;

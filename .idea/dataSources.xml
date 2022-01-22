@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://192.168.10.120:3306/ecs-server</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="gm_test@192.168.10.120" uuid="2f7ee363-4a3e-401f-ae33-1bc478d8b8bf">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://192.168.10.120:3306/gm_test</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

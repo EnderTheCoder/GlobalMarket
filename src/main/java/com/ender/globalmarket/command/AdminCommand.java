@@ -47,14 +47,13 @@ public class AdminCommand implements CommandExecutor {
                     return true;
                 }
 
+                marketItem.x = Integer.parseInt(args[1]);
+                marketItem.k = Integer.parseInt(args[2]);
+                marketItem.b = Integer.parseInt(args[3]);
                 if (marketItem.b > 4 || marketItem.b < 1) {
                     sender.sendMessage(ChatColor.YELLOW + "[GlobalMarket]你输入的市场稳定指数不合法，我们建议在1-4之间");
                     return true;
                 }
-
-                marketItem.x = Integer.parseInt(args[1]);
-                marketItem.k = Integer.parseInt(args[2]);
-                marketItem.b = Integer.parseInt(args[3]);
                 MarketData.putMarketItem(marketItem);
                 sender.sendMessage(ChatColor.GREEN + "[GlobalMarketAdmin]成功设置新的可贸易物品" + marketItem.item.name());
                 break;

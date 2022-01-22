@@ -68,6 +68,8 @@ public class MarketGUI {
 
         int item_counter = 0;
 
+        if (pages == 0) pages = 1;
+
         for (int i = 0; i < pages; i++) {
             inv.add(Bukkit.createInventory(player, 6 * 9, String.format("全球市场%s/%s", i + 1, pages)));
 //            int singlePageLim = (i == pages - 1) ? (marketItems.size() % (5 * 9)) : (5 * 9);

@@ -44,13 +44,14 @@ public class Main extends JavaPlugin {
 
         Mysql m = new Mysql();
 
-        if (!MysqlInit.checkTable("market_log")) MysqlInit.init_market_log();
-        if (!MysqlInit.checkTable("market_item_data")) MysqlInit.init_market_item_data();
 
         if (!m.mysqlInit()) {
             getLogger().warning(ChatColor.RED + "Failed to connect to mysql. Check your config.yml to fix this. Plugin is shutting down.");
             getServer().getPluginManager().disablePlugin(this);
         } else {
+            if (!MysqlInit.checkTable("market_log")) MysqlInit.init_market_log();
+            if (!MysqlInit.checkTable("market_item_data")) MysqlInit.init_market_item_data();
+
             getLogger().info(ChatColor.GREEN + "Mysql connected.");
         }
         getLogger().info(ChatColor.GREEN + "欢迎使用Ender's Global Market插件，加载成功");

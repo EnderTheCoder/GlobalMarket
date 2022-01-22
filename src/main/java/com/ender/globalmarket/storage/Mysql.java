@@ -41,36 +41,30 @@ public class Mysql {
 
 
 
-    public Boolean prepareSql(String sql) {
+    public void prepareSql(String sql) {
         try {
             statement = getConnection().prepareStatement(sql);
-            return true;
         } catch (SQLException e) {
             getLogger().warning(ChatColor.RED + "An error in mysql occurred while preparing sql.");
             e.printStackTrace();
-            return false;
         }
     }
 
-    public Boolean setData(Integer number,String data) {
+    public void setData(Integer number,String data) {
         try {
             statement.setString(number, data);
-            return true;
         } catch (SQLException e) {
             getLogger().warning(ChatColor.RED + "An error in mysql occurred while binding data for sql.");
             e.printStackTrace();
-            return false;
         }
     }
 
-    public Boolean execute() {
+    public void execute() {
         try {
             statement.execute();
-            return true;
         } catch (SQLException e) {
             getLogger().warning(ChatColor.RED + "An error in mysql occurred while executing sql.");
             e.printStackTrace();
-            return false;
         }
     }
 
