@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class PlayerRegData {
     public static boolean isVIP(Player player) {
-        if (!ConfigReader.getEnableNoTax()) return false;
+        if (!ConfigReader.getEnable("NoTax")) return false;
 
         Mysql m = new Mysql();
         m.prepareSql("SELECT level FROM user WHERE username = ?");

@@ -18,7 +18,8 @@ public final class ConfigReader {
     public static int getTimeOut(String timeOutTag) {
         return config.getInt("TimeOut." + timeOutTag);
     }
-    public static boolean getEnableNoTax() {
-        return config.getBoolean("EnableNoTax");
+    public static boolean getEnable(String enableTag) {
+        return config.getBoolean("Enable." + enableTag);
     }
+
 }

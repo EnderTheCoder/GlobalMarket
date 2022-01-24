@@ -7,7 +7,12 @@ Mysql.DataBaseName: database
 
 #贸易税率，收税上交给经济第一的人
 TaxRate: 0.005
+
 #启用VIP免税功能,需要插件ECS-LOGIN
-EnableNoTax: false
+Enable.NoTax: false
+
 #贸易超时时间，即玩家在GUI界面点击贸易时超时时间，单位是秒
 TimeOut.Trade: 10
+
+#随机事件最小间隔时间
+CD.MarketEvent: 1200

@@ -49,6 +49,7 @@ public class Main extends JavaPlugin {
             getLogger().warning(ChatColor.RED + "Failed to connect to mysql. Check your config.yml to fix this. Plugin is shutting down.");
             getServer().getPluginManager().disablePlugin(this);
         } else {
+            //初始化数据库
             if (!MysqlInit.checkTable("market_log")) MysqlInit.init_market_log();
             if (!MysqlInit.checkTable("market_item_data")) MysqlInit.init_market_item_data();
 

@@ -5,6 +5,7 @@ import com.ender.globalmarket.economy.MarketData;
 import com.ender.globalmarket.economy.MarketTrade;
 import com.ender.globalmarket.player.EssInventory;
 import com.ender.globalmarket.player.Inventory;
+import com.ender.globalmarket.storage.Mysql;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -12,6 +13,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.sql.ResultSet;
 
 public class AdminCommand implements CommandExecutor {
 

@@ -28,7 +28,7 @@ public class MarketTrade {
                 //计算贸易税
                 tax = (PlayerRegData.isVIP(player)) ? 0.0 : MarketEconomy.getTax(price);
                 //更新市场数据
-                MarketData.updateMarketItemStorage(marketItem);
+                MarketData.updateMarketItem(marketItem);
                 //更新玩家货币数据
                 Vault.addVaultCurrency(player.getUniqueId(), price - tax);
                 //更新玩家储存
@@ -38,8 +38,8 @@ public class MarketTrade {
             case BUY: {
                 price = MarketEconomy.getBuyingPrice(marketItem, amount);
                 tax = (PlayerRegData.isVIP(player)) ? 0.0 : MarketEconomy.getTax(price);
-                MarketData.updateMarketItemStorage(marketItem);
-                Vault.addVaultCurrency(player.getUniqueId(), price + tax);
+                MarketData.updateMarketItem(marketItem);
+                Vault.subtractCurrency(player.getUniqueId(), price + tax);
                 Inventory.addInventory(player, marketItem.item, amount);
                 break;
             }

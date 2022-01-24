@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
 import static org.bukkit.Bukkit.getLogger;
@@ -79,13 +78,13 @@ public class MarketData {
         m.close();
     }
 
-    public static void updateMarketItemStorage(MarketItem item) {
+    public static void updateMarketItem(MarketItem item) {
         Mysql m = new Mysql();
         m.prepareSql("UPDATE market_item_data SET x = ?, b = ?, k = ? WHERE item_name = ?");
         m.setData(1, String.valueOf(item.x));
         m.setData(2, String.valueOf(item.b));
         m.setData(3, String.valueOf(item.k));
-        m.setData(4, String.valueOf(item.item.name()));
+        m.setData(4, item.item.name());
         m.execute();
         m.close();
     }
