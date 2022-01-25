@@ -88,7 +88,7 @@ public class Mysql {
 
     public Connection getConnection() {
         try {
-            if (!connection.isValid(1000)) {
+            if (connection == null || !connection.isValid(1000)) {
 //                getLogger().info(ChatColor.RED + "Mysql connection is now closed. Trying to creating a new one.");
                 mysqlInit();
             }
